@@ -1,0 +1,28 @@
+# Public data; one shared IP budget, no account credentials on NAS.
+data_dir = "/data"
+requests_per_second = 15
+discover_seconds = 60
+# Rank all discovered candidates; one shared sports + crypto watch budget.
+max_subscriptions = 100
+# Keep BTC/short-window research from being crowded out by older sports volume.
+crypto_reserved_slots = 12
+crypto_probe_seconds = 15
+min_sports_notional_usd = 10000
+min_crypto_notional_usd = 1000
+sports_last_trade_seconds = 86400
+crypto_last_trade_seconds = 120
+# Low-volume instruments are probed again, not watched continuously.
+probe_seconds = 900
+# Include live and next 72 hours of full-game lines. Exclude season futures.
+sports_live_only = false
+sports_lookahead_hours = 72
+# Large output segments, bounded compression batches, raw journals retained.
+archive_format = "parquet"
+rotate_seconds = 21600
+rotate_uncompressed_mb = 512
+row_group_mb = 8
+# Decimal 1 TB. Stop before the cap, never delete/overwrite old archives.
+max_disk_bytes = 1_000_000_000_000
+min_free_disk_mb = 1024
+leagues = ["nfl", "cfb", "nba", "cbb", "nhl", "mlb", "mls", "epl"]
+crypto_assets = ["btc", "eth", "sol", "xrp"]

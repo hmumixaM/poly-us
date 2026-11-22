@@ -1,0 +1,38 @@
+[package]
+name = "poly-us"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Read-only Polymarket US market-data collection and arrival-time strategy research"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/hmumixaM/poly-us"
+keywords = ["polymarket", "market-data", "parquet", "research"]
+include = ["/src/**", "/benches/**", "/tests/**", "/config/collector.toml", "/docs/research-methods.md", "/Cargo.toml", "/Cargo.lock", "/README.md", "/LICENSE"]
+
+[dependencies]
+anyhow = "1"
+base64 = "0.22"
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+clap = { version = "4", features = ["derive"] }
+ed25519-dalek = { version = "2", features = ["zeroize"] }
+flate2 = "1"
+fs2 = "0.4"
+parquet = { version = "=60.1.0", default-features = false, features = ["zstd"] }
+futures-util = "0.3"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "http2"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["arbitrary_precision"] }
+sha2 = "0.10"
+tokio = { version = "1", features = ["rt", "macros", "time", "signal", "sync", "fs", "io-util"] }
+tokio-tungstenite = { version = "0.28", features = ["rustls-tls-native-roots"] }
+toml = "0.8"
+zeroize = "1"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[[bench]]
+name = "engine"
+harness = false

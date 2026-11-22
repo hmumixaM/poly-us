@@ -1,0 +1,29 @@
+services:
+  collector:
+    image: poly-us-collector:local
+    build:
+      context: .
+      args:
+        SOURCE_COMMIT: "${POLY_US_SOURCE_COMMIT:-unversioned}"
+    command: ["collect", "--config", "/app/collector.toml"]
+    user: "${POLY_US_UID:-1000}:${POLY_US_GID:-1000}"
+    restart: unless-stopped
+    init: true
+    read_only: true
+    mem_limit: 192m
+    memswap_limit: 192m
+    cpu_shares: 256
+    pids_limit: 32
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    stop_grace_period: 120s
+    volumes:
+      - ./data:/data
+      - ./config/collector.toml:/app/collector.toml:ro
+    tmpfs:
+      - /tmp:size=4m,noexec,nosuid
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
