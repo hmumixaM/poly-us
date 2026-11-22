@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    name: Rust checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Rust
+        run: rustup toolchain install 1.92.0 --profile minimal --component rustfmt --component clippy
+      - name: Check formatting
+        run: cargo +1.92.0 fmt --all -- --check
+      - name: Test
+        run: cargo +1.92.0 test --locked
+      - name: Lint
+        run: cargo +1.92.0 clippy --locked --all-targets -- -D warnings
+      - name: Build release binary
+        run: cargo +1.92.0 build --locked --release
